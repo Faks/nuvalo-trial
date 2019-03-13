@@ -11,6 +11,16 @@
 |
 */
 
+use Illuminate\Support\Facades\Artisan;
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/api', 'HomeController@getDataFromApi');
+
+Artisan::call('view:clear');
