@@ -11,26 +11,30 @@ use function collect;
 
 /**
  * Class HomeController
- * @package App\Http\Controllers
+ * Created by PhpStorm.
+ * User: Faks
+ * GitHub: https://github.com/Faks
+ *
+ * @category PHP
+ * @package  App\Http\Controllers
+ * @author   Oskars Germovs <solumdesignum@gmail.com>
+ * @license  https://opensource.org/licenses/MIT MIT Licence
+ * @link     http://solum-designum.com
+ * Date: 2019.03.13.
+ * Time: 8:00
  */
 class HomeController extends Controller
 {
     /**
+     * API URL
+     *
      * @var string
      */
     public static $API_URL = "https://nuvalo.merrant.ee/workhours?start=2018-01-01&end=2018-01-31";
     
     /**
-     * Show the application dashboard.
+     * CURL Response
      *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        return view('home');
-    }
-    
-    /**
      * @return mixed
      */
     public function curlResponse()
@@ -47,6 +51,9 @@ class HomeController extends Controller
     }
     
     /**
+     * Collect Data from API
+     * Decode Data from API
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function getDataFromApi()
@@ -70,7 +77,7 @@ class HomeController extends Controller
         $data_collect_company = $this->collectFilter($response, 'company');
         //Store Collection
         $this->storeCompany($data_collect_company);
-    
+        
         /**
          * After Save
          * Redirect To Home
@@ -79,18 +86,18 @@ class HomeController extends Controller
     }
     
     /**
-     * @param $response
-     * @param bool $type
+     * Collect API Response
+     * Callback returns selected type collection
+     * Filter out duplicates
+     * Return Instance
+     *
+     * @param array $response data
+     * @param bool  $type     bool
+     *
      * @return mixed
      */
     public function collectFilter($response, $type = false)
     {
-        /**
-         * Collect API Response
-         * Callback returns selected type collection
-         * Filter out duplicates
-         * Return Instance
-         */
         return collect($response)->map(function ($data) use ($type) {
             $array_response = null;
             if ($type == "employee_work_hours") {
@@ -106,7 +113,11 @@ class HomeController extends Controller
     }
     
     /**
-     * @param $data_collect_employee
+     * Process and store records
+     *
+     * @param array $data_collect_employee data
+     *
+     * @return mixed
      */
     public function storeEmployee($data_collect_employee)
     {
@@ -120,7 +131,11 @@ class HomeController extends Controller
     }
     
     /**
-     * @param $data_collect_employee_work_hours
+     * Process and store records
+     *
+     * @param array $data_collect_employee_work_hours data
+     *
+     * @return mixed
      */
     public function storeEmployeeWorkHours($data_collect_employee_work_hours)
     {
@@ -134,7 +149,11 @@ class HomeController extends Controller
     }
     
     /**
-     * @param $data_collect_company
+     * Process and store records
+     *
+     * @param array $data_collect_company data
+     *
+     * @return mixed
      */
     public function storeCompany($data_collect_company)
     {
@@ -142,7 +161,6 @@ class HomeController extends Controller
             foreach ($data_collect_company as $company) {
                 Company::query()->updateOrCreate($company);
             }
-            
         } catch (ModelNotFoundException $exception) {
             die('api save failed company');
         }

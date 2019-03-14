@@ -17,9 +17,18 @@ Route::get('/', function () {
     return redirect()->route('home');
 });
 
-Auth::routes();
+Route::get('/home', function () {
+    return redirect()->route('filter');
+})->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/filter/{filter?}', 'FilterController@indexFilter')->name('filter');
+Route::get('/filter2', 'FilterController@indexFilter2')->name('filter2');
+//Axio Endpoint
+Route::get('/json-filter2', 'FilterController@filter2Json');
+
+Route::get('/filter3/{sort?}', 'FilterController@indexFilter3')->name('filter3');
+//Axio Endpoint
+Route::get('/json-filter3', 'FilterController@filter3Json');
 
 Route::get('/api', 'HomeController@getDataFromApi');
 

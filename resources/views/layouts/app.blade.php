@@ -40,7 +40,7 @@
             <aside class="bg-light lter b-r aside-md hidden-print" id="nav">
                 <section class="vbox">
                     <header class="header bg-primary lter text-center clearfix">
-                            <h4 class="center-block" style="padding-top: 5px;">Navigation</h4>
+                        <h4 class="center-block" style="padding-top: 5px;">Navigation</h4>
                     </header>
                     <section class="w-f scrollable">
                         <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0"
@@ -49,15 +49,40 @@
                             <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    <li>
-                                        <a href="{{ route('home') }}">
+                                    
+                                    <li @if (request()->segment(1) == 'filter')
+                                        class="active"
+                                        @endif>
+                                        <a href="{{ route('filter') }}">
                                             <i class="fa fa-dashboard icon">
                                                 <b class="bg-danger"></b>
                                             </i>
-                                            <span>Filter</span>
+                                            <span>Filter 1</span>
                                         </a>
                                     </li>
                                     
+                                    <li @if (request()->segment(1) == 'filter2')
+                                        class="active"
+                                        @endif>
+                                        <a href="{{ route('filter2') }}">
+                                            <i class="fa fa-dashboard icon">
+                                                <b class="bg-danger"></b>
+                                            </i>
+                                            <span>Filter 2</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li @if (request()->segment(1) == 'filter3')
+                                        class="active"
+                                        @endif>
+                                        <a href="{{ route('filter3') }}">
+                                            <i class="fa fa-dashboard icon">
+                                                <b class="bg-danger"></b>
+                                            </i>
+                                            <span>Filter 3</span>
+                                        </a>
+                                    </li>
+                                
                                 </ul>
                             </nav>
                             <!-- / nav -->
