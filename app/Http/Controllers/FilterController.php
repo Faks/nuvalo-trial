@@ -7,6 +7,7 @@ use App\EmployeeWorkHours;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+
 use function compact;
 use function round;
 
@@ -56,10 +57,10 @@ class FilterController extends Controller
             )
             ->orderByDesc('employee.id')
             ->paginate(20);
-        
+
         return view('filter', compact('model_employee'));
     }
-    
+
     /**
      *  Render View
      *
@@ -67,41 +68,9 @@ class FilterController extends Controller
      */
     public function indexFilter2()
     {
-        /* Basic Version
-        $year_months = [];
-        //Building Years Month Names
-        for ($x = 1; $x <= 12; $x++) {
-            $year_months[] = date("Y-m", strtotime("$x/12/18"));
-        }
-
-        $each_month_total_hours = [];
-        $dates_and_hours = [];
-        foreach ($year_months as $month) {
-
-            $model_employee_work_hours = EmployeeWorkHours::query()
-                ->with(['employee.company'])
-                ->where(DB::raw("DATE_FORMAT(employee_work_hours.start, '%Y-%m')"), '=', $month)
-                ->get();
-
-            foreach ($model_employee_work_hours as $hour) {
-                $dates_and_hours[] = [
-                    Carbon::parse($hour->getOriginal('start'))->format('Y-m') => $hour->total_hours,
-                ];
-            }
-
-            $total_hours_each_day_in_month = collect($dates_and_hours)->where($month)->flatMap(
-                function ($value) use ($month) {
-                    return Arr::flatten($value);
-                }
-            )->sum();
-
-            $each_month_total_hours[Carbon::parse($month)->format('M Y')] = $total_hours_each_day_in_month;
-        }
-        */
-        
         return view('filter2');
     }
-    
+
     /**
      *  Render View
      *
@@ -116,11 +85,11 @@ class FilterController extends Controller
                 (request()->has('filter')) ? request()->get('filter') : 'desc'
             )
             ->paginate(20);
-        
+
         return view('filter3', compact('model_employee_work_hours'));
     }
-    
-    
+
+
     /**
      *  Axio Endpoint
      *
@@ -133,7 +102,7 @@ class FilterController extends Controller
         for ($x = 1; $x <= 12; $x++) {
             $year_months[] = date("Y-m", strtotime("$x/12/18"));
         }
-    
+
         $each_month_total_hours = [];
         $dates_and_hours = [];
         foreach ($year_months as $month) {
@@ -141,33 +110,33 @@ class FilterController extends Controller
                 ->with(['employee.company'])
                 ->where(DB::raw("DATE_FORMAT(employee_work_hours.start, '%Y-%m')"), '=', $month)
                 ->get();
-        
+
             foreach ($model_employee_work_hours as $hour) {
                 $dates_and_hours[] = [
                     Carbon::parse($hour->getOriginal('start'))->format('Y-m') => $hour->total_hours,
                 ];
             }
-        
+
             $total_hours_each_day_in_month = collect($dates_and_hours)->where($month)->flatMap(
                 function ($value) use ($month) {
                     return Arr::flatten($value);
                 }
             )->sum();
-        
+
             $each_month_total_hours[] = [
                 'month' => Carbon::parse($month)->format('M Y'),
                 'hours' => round($total_hours_each_day_in_month, 2)
             ];
         }
-        
+
         $response = [
 
             'data' => $each_month_total_hours
         ];
-        
+
         return response()->json($response);
     }
-    
+
     /**
      *  Axio Endpoint
      *
@@ -178,7 +147,7 @@ class FilterController extends Controller
         $model_employee_work_hours = EmployeeWorkHours::query()
             ->with(['employee.company'])
             ->paginate(20);
-        
+
         $response = [
             'pagination' => [
                 'total' => $model_employee_work_hours->total(),
@@ -190,7 +159,7 @@ class FilterController extends Controller
             ],
             'data' => $model_employee_work_hours
         ];
-        
+
         return response()->json($response);
     }
 }

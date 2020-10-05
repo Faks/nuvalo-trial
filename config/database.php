@@ -55,7 +55,7 @@ return [
             'engine' => null,
             'strict'    => env('DB_STRICT', 'true'),
             'sslmode'   => env('MYSQL_SSL_MODE', ''),
-            'options'   => extension_loaded('pdo_mysql') ? [
+            'options'   => extension_loaded('pdo_mysql') && env('MYSQL_SSL_MODE', false) ? [
                 PDO::MYSQL_ATTR_SSL_KEY                => env('MYSQL_ATTR_SSL_KEY', ''),
                 PDO::MYSQL_ATTR_SSL_CERT               => env('MYSQL_ATTR_SSL_CERT', ''),
                 PDO::MYSQL_ATTR_SSL_CA                 => env('MYSQL_ATTR_SSL_CA', ''),
