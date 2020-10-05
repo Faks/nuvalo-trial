@@ -6,8 +6,11 @@ use App\Company;
 use App\Employee;
 use App\EmployeeWorkHours;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
+
 use function collect;
+use function redirect;
 
 /**
  * Class HomeController
@@ -31,7 +34,7 @@ class HomeController extends Controller
      * @var string
      */
     public static $API_URL = "https://nuvalo.merrant.ee/workhours?start=2018-01-01&end=2018-01-31";
-    
+
     /**
      * CURL Response
      *
@@ -46,15 +49,15 @@ class HomeController extends Controller
         curl_setopt($curl_init, CURLOPT_URL, self::$API_URL);
         $curl_response = curl_exec($curl_init);
         curl_close($curl_init);
-        
+
         return $curl_response;
     }
-    
+
     /**
      * Collect Data from API
      * Decode Data from API
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function getDataFromApi()
     {
@@ -62,29 +65,29 @@ class HomeController extends Controller
          * API Decode Response
          */
         $response = json_decode($this->curlResponse(), true);
-        
+
         //Collect Filter
         $data_collect_employee = $this->collectFilter($response, 'employee');
         //Store Collection
         $this->storeEmployee($data_collect_employee);
-        
+
         //Collect Filter
         $data_collect_employee_work_hours = $this->collectFilter($response, 'employee_work_hours');
         //Store Collection
         $this->storeEmployeeWorkHours($data_collect_employee_work_hours);
-        
+
         //Collect Filter
         $data_collect_company = $this->collectFilter($response, 'company');
         //Store Collection
         $this->storeCompany($data_collect_company);
-        
+
         /**
          * After Save
          * Redirect To Home
          */
         return redirect()->home();
     }
-    
+
     /**
      * Collect API Response
      * Callback returns selected type collection
@@ -107,11 +110,11 @@ class HomeController extends Controller
             } elseif ($type == "company") {
                 $array_response = $data['employee']['company'];
             }
-            
+
             return $array_response;
         })->unique()->values();
     }
-    
+
     /**
      * Process and store records
      *
@@ -129,7 +132,7 @@ class HomeController extends Controller
             die('api save failed employee');
         }
     }
-    
+
     /**
      * Process and store records
      *
@@ -147,7 +150,7 @@ class HomeController extends Controller
             die('api save failed employee work hours');
         }
     }
-    
+
     /**
      * Process and store records
      *
@@ -164,5 +167,17 @@ class HomeController extends Controller
         } catch (ModelNotFoundException $exception) {
             die('api save failed company');
         }
+    }
+
+    /**
+     * @return RedirectResponse
+     */
+    public function massDestroy()
+    {
+        Employee::query()->delete();
+        Company::query()->delete();
+        EmployeeWorkHours::query()->delete();
+
+        return redirect()->back();
     }
 }

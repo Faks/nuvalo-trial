@@ -32,4 +32,6 @@ Route::get('/json-filter3', 'FilterController@filter3Json');
 
 Route::get('/api', 'HomeController@getDataFromApi');
 
+Route::get('/mass/destroy', 'HomeController@massDestroy')->name('mass.destroy');
+
 Artisan::call('view:clear');

@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <title>{{ env('APP_NAME') }}</title>
-    
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -19,7 +19,7 @@
             <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
                 <i class="fa fa-bars"></i>
             </a>
-            <a href="/" class="navbar-brand" data-toggle="fullscreen">Nuvalo Trial</a>
+            <a href="https://solum-designum.eu" class="navbar-brand" data-toggle="fullscreen">Nuvalo Trial</a>
             <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".nav-user">
                 <i class="fa fa-cog"></i>
             </a>
@@ -29,6 +29,18 @@
                 <div class="m-t m-l">
                     <a href="/api" class="btn btn-xs btn-primary" title="Collect Workers from  API">
                         Collect Data From API
+                    </a>
+
+                    <a href="{{ route('mass.destroy') }}" class="btn btn-xs btn-primary" title="Purge All Data">
+                        Purge Data
+                    </a>
+
+                    <a href="https://bitbucket.org/Faks/nuvalo-trial/src/master/" class="btn btn-xs btn-primary" title="Source Code">
+                        Bitbucket
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/oskars-germovs-a94b3318a/" class="btn btn-xs btn-primary" title="Contact Me">
+                        LinkedIn
                     </a>
                 </div>
             </li>
@@ -45,11 +57,11 @@
                     <section class="w-f scrollable">
                         <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0"
                              data-size="5px" data-color="#333333">
-                            
+
                             <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    
+
                                     <li @if (request()->segment(1) == 'filter')
                                         class="active"
                                         @endif>
@@ -60,7 +72,7 @@
                                             <span>Filter 1</span>
                                         </a>
                                     </li>
-                                    
+
                                     <li @if (request()->segment(1) == 'filter2')
                                         class="active"
                                         @endif>
@@ -71,7 +83,7 @@
                                             <span>Filter 2</span>
                                         </a>
                                     </li>
-                                    
+
                                     <li @if (request()->segment(1) == 'filter3')
                                         class="active"
                                         @endif>
@@ -82,7 +94,7 @@
                                             <span>Filter 3</span>
                                         </a>
                                     </li>
-                                
+
                                 </ul>
                             </nav>
                             <!-- / nav -->
